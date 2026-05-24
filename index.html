@@ -1,0 +1,47 @@
+html_code = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemma Coding Agent</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        textarea { width: 100%; height: 100px; }
+        #response { white-space: pre-wrap; background: #f4f4f4; padding: 15px; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Agent Web UI</h1>
+    <p>Paste your Colab Tunnel URL here:</p>
+    <input type='text' id='url' style='width: 100%' placeholder='https://...localtunnel.me'>
+    <h3>Prompt:</h3>
+    <textarea id='prompt' placeholder='Write a C++ function...'></textarea><br>
+    <button onclick='askAgent()'>Send to Agent</button>
+    <div id='response'>Output will appear here...</div>
+
+    <script>
+        async function askAgent() {
+            const baseUrl = document.getElementById('url').value;
+            const prompt = document.getElementById('prompt').value;
+            const respDiv = document.getElementById('response');
+            
+            respDiv.innerText = 'Thinking...';
+            
+            try {
+                const response = await fetch(baseUrl + '/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                const data = await response.json();
+                respDiv.innerText = data.output;
+            } catch (err) {
+                respDiv.innerText = 'Error: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+print("Copy the code below to your GitHub index.html file:")
+print("-" * 20)
+print(html_code)
