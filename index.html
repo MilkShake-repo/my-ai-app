@@ -22,13 +22,16 @@
             const baseUrl = document.getElementById('url').value;
             const prompt = document.getElementById('prompt').value;
             const respDiv = document.getElementById('response');
-            
+
             respDiv.innerText = 'Thinking...';
-            
+
             try {
                 const response = await fetch(baseUrl + '/generate', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'bypass-tunnel-reminder': 'true' // This skips the Localtunnel warning page
+                    },
                     body: JSON.stringify({ prompt: prompt })
                 });
                 const data = await response.json();
